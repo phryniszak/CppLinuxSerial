@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1.0)
 
 project(CppLinuxSerial VERSION 2.7.1)
 
-option(BUILD_TESTS "If set to true, unit tests will be build as part of make all." TRUE)
+option(BUILD_TESTS "If set to true, unit tests will be build as part of make all." FALSE)
 if (BUILD_TESTS)
     message("BUILD_TESTS=TRUE, unit tests will be built.")
 else ()
