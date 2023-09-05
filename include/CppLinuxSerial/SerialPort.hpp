@@ -24,12 +24,15 @@
 // User headers
 #include "Exception.hpp"
 
-namespace mn {
-    namespace CppLinuxSerial {
+namespace mn
+{
+    namespace CppLinuxSerial
+    {
 
         /// \brief      Represents the baud rate "types" that can be used with the serial port. STANDARD represents all
         ///             the standard baud rates as provided by UNIX, CUSTOM represents a baud rate defined by an arbitray integer.
-        enum class BaudRateType {
+        enum class BaudRateType
+        {
             STANDARD,
             CUSTOM,
         };
@@ -37,7 +40,8 @@ namespace mn {
         /// \brief      Strongly-typed enumeration of baud rates for use with the SerialPort class
         /// \details    Specifies all the same baud rates as UNIX, as well as B_CUSTOM to specify your
         ///             own. See https://linux.die.net/man/3/cfsetispeed for list of supported UNIX baud rates.
-        enum class BaudRate {
+        enum class BaudRate
+        {
             B_0,
             B_50,
             B_75,
@@ -61,46 +65,53 @@ namespace mn {
             B_CUSTOM, // Placeholder
         };
 
-        /// \brief      Enumeration of all the valid num. of data bits. Must align with the options 
+        /// \brief      Enumeration of all the valid num. of data bits. Must align with the options
         ///                 provided in termbits.h, i.e. CS5, CS6, CS7 and CS8.
-        enum class NumDataBits {
+        enum class NumDataBits
+        {
             FIVE,
             SIX,
             SEVEN,
             EIGHT,
         };
 
-        enum class Parity {
+        enum class Parity
+        {
             NONE,
             EVEN,
             ODD,
         };
 
-        enum class NumStopBits {
+        enum class NumStopBits
+        {
             ONE,
             TWO,
         };
 
         /// \brief      All the possible options for setting the hardware flow control.
-        enum class HardwareFlowControl {
+        enum class HardwareFlowControl
+        {
             OFF,
             ON,
         };
 
         /// \brief      All the possible options for setting the software flow control.
-        enum class SoftwareFlowControl {
+        enum class SoftwareFlowControl
+        {
             OFF,
             ON,
         };
 
         /// \brief      Represents the state of the serial port.
-        enum class State {
+        enum class State
+        {
             CLOSED,
             OPEN,
         };
 
         /// \brief      SerialPort object is used to perform rx/tx serial communication.
-        class SerialPort {
+        class SerialPort
+        {
 
         public:
             /// \brief      Default constructor. You must specify at least the device before calling Open().
@@ -113,8 +124,8 @@ namespace mn {
             SerialPort(const std::string &device, BaudRate baudRate, NumDataBits numDataBits, Parity parity, NumStopBits numStopBits);
 
             /// \brief      Constructor that sets up serial port and allows the user to specify all the common parameters and flow control.
-            SerialPort(const std::string &device, BaudRate baudRate, NumDataBits numDataBits, Parity parity, 
-                NumStopBits numStopBits, HardwareFlowControl hardwareFlowControl, SoftwareFlowControl softwareFlowControl);
+            SerialPort(const std::string &device, BaudRate baudRate, NumDataBits numDataBits, Parity parity,
+                       NumStopBits numStopBits, HardwareFlowControl hardwareFlowControl, SoftwareFlowControl softwareFlowControl);
 
             /// \brief      Constructor that sets up serial port with the basic parameters, and a custom baud rate.
             SerialPort(const std::string &device, speed_t baudRate);
@@ -164,27 +175,27 @@ namespace mn {
             /// \brief      Sends a text message over the com port.
             /// \param      data        The data that will be written to the COM port.
             /// \throws     CppLinuxSerial::Exception if state != OPEN.
-            void Write(const std::string& data);
+            void Write(const std::string &data);
 
             /// \brief      Sends a binary message over the com port.
             /// \param      data        The data that will be written to the COM port.
             /// \throws     CppLinuxSerial::Exception if state != OPEN.
-            void WriteBinary(const std::vector<uint8_t>& data);
+            void WriteBinary(const std::vector<uint8_t> &data);
 
             /// \brief      Use to read text from the COM port. Blocking nature depends on SetTimeout().
             /// \param      data        The read characters from the COM port will be appended to this string.
             /// \note       Use ReadBinary() if you want to interpret received data as binary.
-            /// \throws     
+            /// \throws
             ///             CppLinuxSerial::Exception if state != OPEN.
             ///             std::system_error() if device has been disconnected.
-            void Read(std::string& data);
+            void Read(std::string &data);
 
             /// \brief      Use to read binary data from the COM port. Blocking nature depends on SetTimeout().
             /// \param      data        The read bytes from the COM port will be appended to this vector.
             /// \note       Use Read() if you want to interpret received data as a string.
             /// \throws     CppLinuxSerial::Exception if state != OPEN.
             ///             std::system_error() if device has been disconnected.
-            void ReadBinary(std::vector<uint8_t>& data);
+            void ReadBinary(std::vector<uint8_t> &data);
 
             /// \brief		Use to get number of bytes available in receive buffer.
             /// \returns    The number of bytes available in the receive buffer (ready to be read).
@@ -196,7 +207,6 @@ namespace mn {
             State GetState();
 
         private:
-
             /// \brief      Configures the tty device as a serial port.
             /// \warning    Device must be open (valid file descriptor) when this is called.
             void ConfigureTermios();
@@ -212,7 +222,7 @@ namespace mn {
             /// \brief      checks whether the port is open or not
             /// \param      prettyFunc  Function details obtained using __PRETTY_FUNCTION__
             /// \throws     CppLinuxSerial::Exception if port is not opened
-            void PortIsOpened(const std::string& prettyFunc);
+            void PortIsOpened(const std::string &prettyFunc);
 
             /// \brief      Keeps track of the serial port's state.
             State state_;
@@ -252,12 +262,11 @@ namespace mn {
             int32_t timeout_ms_;
 
             std::vector<char> readBuffer_;
-            unsigned char readBufferSize_B_;
+            size_t readBufferSize_B_;
 
             static constexpr BaudRate defaultBaudRate_ = BaudRate::B_57600;
             static constexpr int32_t defaultTimeout_ms_ = -1;
-            static constexpr unsigned char defaultReadBufferSize_B_ = 255;
-
+            static constexpr size_t defaultReadBufferSize_B_ = 4096;
         };
 
     } // namespace CppLinuxSerial
