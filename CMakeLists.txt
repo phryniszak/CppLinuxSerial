@@ -4,9 +4,9 @@ project(CppLinuxSerial VERSION 2.7.1)
 
 option(BUILD_TESTS "If set to true, unit tests will be build as part of make all." FALSE)
 if (BUILD_TESTS)
-    message("BUILD_TESTS=TRUE, unit tests will be built.")
+    message("CppLinuxSerial BUILD_TESTS=TRUE, unit tests will be built.")
 else ()
-    message("BUILD_TESTS=FALSE, unit tests will NOT be built.")
+    message("CppLinuxSerial BUILD_TESTS=FALSE, unit tests will NOT be built.")
 endif ()
 
 #=================================================================================================#
